@@ -21,9 +21,13 @@ public class Main {
 
         IO.println("==========");
 
-        String opcaoEscolhida = IO.readln();
+        String opcaoEscolhida = "";
 
         while (opcaoEscolhida != "5") {
+
+            IO.println("Digite sua opção: ");
+            opcaoEscolhida = IO.readln();
+
             switch (opcaoEscolhida) {
                 case "1":
                     Paciente novoPaciente = Main.criarPaciente();
@@ -34,6 +38,12 @@ public class Main {
                     break;
                 case "3":
                     Consulta novaConsulta = Main.criarConsulta(pacientes);
+
+                    if (novaConsulta == null) {
+                        IO.println("Paciente informado não foi encontrado!");
+                        break;
+                    }
+
                     consultas.add(novaConsulta);
                     break;
                 case "4":
@@ -43,8 +53,6 @@ public class Main {
                     break;
             }
         }
-
-
     }
 
     static Paciente criarPaciente() {
@@ -82,7 +90,11 @@ public class Main {
         IO.println("Digite a duração em minutos da consulta");
         String duracao = IO.readln();
 
-        Optional<Paciente> paciente = listaPacientes.stream().filter(p -> p.getCpf() == cpf).findFirst();
+        Optional<Paciente> paciente = listaPacientes.stream().filter(p -> p.getCpf().equals(cpf)).findFirst();
+
+        if (paciente.isEmpty()) {
+            return null;
+        }
 
         Consulta novaConsulta = new Consulta(dataConsulta, Double.parseDouble(duracao), paciente.get());
 
@@ -91,7 +103,7 @@ public class Main {
 
     static void listarConsultas(ArrayList<Consulta> consultas) {
         for (Consulta consulta : consultas) {
-            IO.println("Consulta " + consulta.getDataInicioConsulta() + " Duração" + consulta.getDuracaoMinutos() + " Paciente" + consulta.getPaciente().getNome());
+            IO.println("Consulta " + consulta.getDataInicioConsulta() + " Duração " + consulta.getDuracaoMinutos() + " Paciente " + consulta.getPaciente().getNome());
         }
     }
 }
