@@ -37,12 +37,10 @@ public class Main {
                     Main.listarPacientes(pacientes);
                     break;
                 case "3":
-                    Consulta novaConsulta = Main.criarConsulta(pacientes);
+                    Consulta novaConsulta = Main.criarConsulta(consultas, pacientes);
 
-                    if (novaConsulta == null) {
-                        IO.println("Paciente informado não foi encontrado!");
-                        break;
-                    }
+                    if (novaConsulta == null) break;
+
 
                     consultas.add(novaConsulta);
                     break;
@@ -76,7 +74,7 @@ public class Main {
         }
     }
 
-    static Consulta criarConsulta(ArrayList<Paciente> listaPacientes) {
+    static Consulta criarConsulta(ArrayList<Consulta> consultas, ArrayList<Paciente> listaPacientes) {
         IO.println("Digite o cpf do cliente que vai ser consultado: ");
         String cpf = IO.readln();
 
@@ -93,10 +91,25 @@ public class Main {
         Optional<Paciente> paciente = listaPacientes.stream().filter(p -> p.getCpf().equals(cpf)).findFirst();
 
         if (paciente.isEmpty()) {
+            IO.println("Paciente informado não foi encontrado!");
             return null;
         }
 
-        Consulta novaConsulta = new Consulta(dataConsulta, Double.parseDouble(duracao), paciente.get());
+        Double duracaoMinutos = Double.parseDouble(duracao);
+
+        LocalDateTime fimConsulta = dataConsulta.plusMinutes((long) Math.round(duracaoMinutos));
+        for (Consulta c : consultas) {
+            LocalDateTime inicioExistente = c.getDataInicioConsulta();
+            LocalDateTime fimExistente = inicioExistente.plusMinutes((long) Math.round(c.getDuracaoMinutos()));
+
+            boolean conflito = dataConsulta.isBefore(fimExistente) && fimConsulta.isAfter(inicioExistente);
+            if (conflito) {
+                IO.println("Erro: horário da consulta conflita com outra consulta já agendada!");
+                return null;
+            }
+        }
+
+        Consulta novaConsulta = new Consulta(dataConsulta, duracaoMinutos, paciente.get());
 
         return novaConsulta;
     }
