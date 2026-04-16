@@ -1,37 +1,19 @@
 package org.example;
 
+import java.time.LocalDate;
+
 public class Paciente {
     private String nome;
-    private int idade;
     private String cpf;
+    private LocalDate dataNascimento;
 
-    public Paciente(String nome, int idade, String cpf) {
+    public Paciente(String nome, String cpf, LocalDate dataNascimento) {
         this.nome = nome;
-        this.idade = idade;
         this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public int getIdade() {
-        return idade;
-    }
-
-    public void setIdade(int idade) {
-        this.idade = idade;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+    public String getNome() { return nome; }
+    public String getCpf() { return cpf; }
+    public LocalDate getDataNascimento() { return dataNascimento; }
 }

@@ -1,48 +1,36 @@
 package org.example;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Consulta {
     private LocalDateTime dataInicioConsulta;
-    private Double duracaoMinutos;
+    private int duracaoMinutos;
+
     private Paciente paciente;
-    static Double antecedenciaCancelamentoMinutos;
+    private Medico medico;
 
-    public Consulta(LocalDateTime dataInicioConsulta, Double duracaoMinutos, Paciente paciente) {
+    private Atestado atestado; // 0..1
+    private List<Prescricao> prescricoes = new ArrayList<>();
+
+    public Consulta(LocalDateTime dataInicioConsulta, int duracaoMinutos, Paciente paciente, Medico medico) {
         this.dataInicioConsulta = dataInicioConsulta;
         this.duracaoMinutos = duracaoMinutos;
         this.paciente = paciente;
+        this.medico = medico;
     }
 
-    public LocalDateTime getDataInicioConsulta() {
-        return dataInicioConsulta;
+    public void emitirAtestado(Atestado atestado) {
+        this.atestado = atestado;
     }
 
-    public void setDataInicioConsulta(LocalDateTime dataInicioConsulta) {
-        this.dataInicioConsulta = dataInicioConsulta;
+    public void adicionarPrescricao(Prescricao prescricao) {
+        prescricoes.add(prescricao);
     }
 
-    public Double getDuracaoMinutos() {
-        return duracaoMinutos;
-    }
-
-    public void setDuracaoMinutos(Double duracaoMinutos) {
-        this.duracaoMinutos = duracaoMinutos;
-    }
-
-    public static Double getAntecedenciaCancelamentoMinutos() {
-        return antecedenciaCancelamentoMinutos;
-    }
-
-    public static void setAntecedenciaCancelamentoMinutos(Double antecedenciaCancelamentoMinutos) {
-        Consulta.antecedenciaCancelamentoMinutos = antecedenciaCancelamentoMinutos;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
+    public Paciente getPaciente() { return paciente; }
+    public Medico getMedico() { return medico; }
+    public LocalDateTime getDataInicioConsulta() { return dataInicioConsulta; }
+    public int getDuracaoMinutos() { return duracaoMinutos; }
 }
